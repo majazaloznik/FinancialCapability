@@ -1,0 +1,123 @@
+---
+title: "financial capability - data analysis journal"
+author: mz
+date:
+output: pdf_document
+---
+
+# 7.5. 2017
+
+1. Download new version of US&BHPS data with full documentation  in `data\` folder. 
+
+Structure:
+
+* `data\UKDA-6614-tab\tab` individual wave folders, within each one:
+* 13 `.tab` delimited data files. for children, young adults, indificual responses, household.. names coded using wave names e.g. wave 7 individual responses are: `g_indresp.tab`
+* `data\UKDA-6614-tab\mrdoc\allissue` has individual wave folders and within each one:
+* the `.rtf` format dictionary files, which five you the variable name, variable label and value/label combinations for each variable. These fiels do not have the questions, but are usually clear from the labels
+* `data\UKDA-6614-tab\mrdoc\pdf` has a bunch of pdf files  including user manuals for BHPS and US, as well as for each of the 7 waves the techincal reports and questionnaires. 
+
+
+# 8.5.2017
+
+Questionnaire files and data dictionary files do not have a correspondence that is at all obvious. Manually checking through questionnaire and data dictionaries, there is a lot of stuff that is off. But find e.g. on page 72 or so of the questionnaire the variables start to macth up with approx page 26 in the g_hhresp dictionary, when it gets to hsbeds, hsrooms etc. 
+
+I am therefore assuming that all variable names in the `.tab` files have a matched entry in the data dictionary files. And that furthermore, all of them can be found in the questionnaire, although there are questions in there that are not in the data. 
+
+If this is so, it still doens't make it easy to find sets of questions. 
+
+The wave specific documentation in `data\UKDA-6614-tab\mrdoc\pdf` - the "Technical Reports" for example list module names, especially module names that are meant to be specific to each wave in the Appendix, but these do not seem to crop up anywhere else, elast of all in the data dictionaries or questionnaires. So it's not clear how to figure out where they are. 
+
+I need to figure out what are the financial behaviours and attitudes questions that have apparently been asked in waves 4 and 7.
+
+But first things first, what is the age distribution of respondents. OK, so there are 841 people aged 85 or more in the dataset. 
+
+OK, then back to figuring out the modules. The user guide says "there are multiple resources for learing about the sutdy variables in order to plan analyses. these include the questionnaires and the module and variable views in the online documentation system. 
+
+OK, so there is actually a module view online, so we have the `household_finances_w1-w7` module, which asks: 
+
+* how much have you received from dividents and interest on any savings or investments you have
+* how well are you managing financially now
+* how well do you think you'll be managing financially in a year
+
+Gets asked every year, yeah, 1-7.
+
+I'll go through all waves in a sec, but the problem is still that I don't know where the "household interview modules are", because that's where the financial strain one is. Aha, OK, there is just a household questionnaire, that has all the modules inside - and they are not labelled, so there is no point. 
+
+So yeah, *Financial strain* gets asked in al 7 waves, it's in the `household_w` and it's only three questions:
+
+* `household_w4.xphsdb` -- problems paying for housing
+* `household_w4.xphsdct` -- behind on council tax in last 12 months
+* `household_w4.xphsdba` -- problems paying bills
+
+Wave 1: didn't have the 'module' terminology yet.. 
+
+* retirementplanning_w7
+
+Wave 2: 
+
+* charitablegiving_w2
+* retirementplanning_w2
+* savings_w2
+
+Wave 3:
+
+* retirementplanning_w3
+
+
+Let's look at 4 again, there are (according to the tech report appendix) three modules on Financial behaviours:
+
+* personalpensions_w4
+* charitablegiving_w4
+* savings_w4
+* remittances_w4
+* retirementplanning_w4
+
+In wave 5 the Tech report might have typos, since it refers to wave 4, yeah, it also has 
+
+* childmaintenance_w5 
+* retirementplanning_w5
+
+Wave 6: 
+
+* savings_w6
+* personalpensions_w6
+* retirementplanning_w6
+* charitablegiving_w6
+
+In 7 it is:
+
+* childmaintenance_w7
+* remittances_w7
+
+Wave 1-7: 
+Wellbeing: five self-completion modules:
+
+* `scaghq_w` GHQ (minor psychiatric) - 12 questions
+* `scasf12_w` SF12 (health) - 12 questions
+* `scasatisfaction_w` - 4 questions, one about satisfaction with income. 
+* `scapovertyshame_w` povertry shame - 2 questions
+* `scawemwbs_w`  wemwbs - mental wellbeing scale - 7 questions
+* `socialcare` module - ability/ease of doing everyday activities, including doing paperwork and paying bills
+
+Then the question is what about BHPS and the harmonization how useful is that?
+
+# Wednesday 9.5.2018
+
+The number of respondets and age groups, need to figure that out for the harmonized BHPS sample. 
+
+Looks like there was a good 10264 respondents in the first wave of bsps, and there seem to be 8498 of them in the current one. 
+
+So the way you tell the difference is using the `pid` variable, that is the person id from the BHPS, and is still in the datasets now. 
+
+There are 2686 people still in the UKHLS that were in the original BHPS, and more than half of these are (understandably) over 60. 122 of them are over 85, so for them we have 25 years worth of data. 
+
+But what about geography?
+
+OK, so in BHPS you have regions or metropolitan area (ba_region) -- 18 of them -- and government office region (11 of them. It looks like UKHLS only has the governemnt office regions, so 11 of them. But there is special licence access which has way more granularity. 
+
+OK, now let's move to ELSA, downloaded from the UK data service after accepting agreement that won't try to identify people from healty survey england and won't attempt to guess geography. 
+
+There were some parsing failures in the import, but i won't worry about that now. 
+
+Where is the age variable?
